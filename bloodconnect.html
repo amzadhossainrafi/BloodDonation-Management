@@ -1,0 +1,964 @@
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --red:#C8102E;--navy:#0D1B2A;--navy2:#1E3352;
+  --gold:#C9A84C;--goldf:#F0D98C;
+  --grey:#EEF1F5;--greyb:#8A9BB0;
+  --white:#fff;--green:#2ECC71;
+}
+body{font-family:'Outfit',sans-serif;background:#D8DCE2;padding:16px;}
+.pres{max-width:960px;margin:0 auto;}
+
+/* ── NAV BAR ── */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--navy);border-radius:12px;padding:10px 20px;
+  margin-bottom:14px;gap:12px;
+}
+.nav-title{color:var(--goldf);font-size:13px;font-weight:600;letter-spacing:1px;white-space:nowrap;}
+.nav-btns{display:flex;gap:8px;align-items:center;}
+.nav-btn{
+  background:rgba(255,255,255,.1);border:none;color:#fff;
+  padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.5px;
+  transition:background .15s;
+}
+.nav-btn:hover{background:rgba(255,255,255,.2);}
+.nav-btn.red{background:var(--red);}
+.nav-btn.red:hover{background:#8B0A1E;}
+.nav-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.dot{
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(255,255,255,.25);cursor:pointer;transition:background .15s;
+}
+.dot.active{background:var(--red);}
+.pg-counter{color:rgba(255,255,255,.5);font-size:11px;font-weight:500;white-space:nowrap;}
+
+/* ── SLIDE SHELL ── */
+.slide-wrap{display:none;}
+.slide-wrap.active{display:block;}
+.slide{
+  width:100%;aspect-ratio:297/210;
+  background:var(--white);border-radius:10px;overflow:hidden;
+  position:relative;box-shadow:0 8px 32px rgba(0,0,0,.18);
+}
+
+/* ── SPEAK BOX ── */
+.speak{
+  background:var(--navy);border-radius:10px;
+  padding:16px 22px;margin-top:10px;
+}
+.speak-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  color:var(--goldf);margin-bottom:10px;
+}
+.speak-line{
+  font-size:13px;color:rgba(255,255,255,.88);
+  line-height:1.75;border-left:3px solid var(--red);
+  padding-left:14px;margin-bottom:8px;border-radius:0;
+}
+.speak-line:last-child{margin-bottom:0;}
+.speak-tip{
+  font-size:11px;color:rgba(255,255,255,.45);
+  margin-top:10px;padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.1);
+  line-height:1.6;
+}
+
+/* ══════════ SLIDE INNER LAYOUTS ══════════ */
+.inner{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  padding:3.5% 4.5% 5%;
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5%;}
+.badge{
+  background:var(--red);color:#fff;
+  font-size:clamp(7px,1.1vw,10px);font-weight:700;letter-spacing:2px;
+  padding:3px 10px;border-radius:4px;
+}
+.pgn{font-size:clamp(7px,1vw,10px);color:var(--greyb);font-weight:500;}
+.logo{font-family:'DM Serif Display',serif;font-size:clamp(10px,1.6vw,15px);color:var(--red);}
+.ptitle{font-family:'DM Serif Display',serif;font-size:clamp(14px,3.2vw,30px);color:var(--navy);letter-spacing:-.5px;line-height:1.1;margin-bottom:.4%;}
+.psub{font-size:clamp(7px,1.3vw,12px);color:var(--red);font-weight:600;letter-spacing:.5px;margin-bottom:2%;}
+.redline{height:2px;background:var(--red);border-radius:2px;margin-bottom:2%;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:2%;flex:1;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2%;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5%;}
+.col{display:flex;flex-direction:column;gap:2%;}
+.card{background:var(--grey);border-radius:8px;padding:3% 3.5%;border:1px solid #DDE2EA;}
+.card-navy{background:var(--navy);color:#fff;}
+.card-red{background:var(--red);color:#fff;}
+.ctitle{font-size:clamp(6px,1vw,9px);font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:8%;text-transform:uppercase;}
+.card-navy .ctitle{color:var(--goldf);}
+.card-red .ctitle{color:rgba(255,255,255,.75);}
+.code{background:var(--navy);color:#A8D8EA;font-family:'DM Mono',monospace;font-size:clamp(6px,.95vw,9px);line-height:1.65;padding:3% 3.5%;border-radius:6px;}
+.kw{color:#FF79C6;}.ty{color:#8BE9FD;}.fn{color:#50FA7B;}.cm{color:#6272A4;}.st{color:#F1FA8C;}
+.hl{background:#FEF2F4;border-left:3px solid var(--red);padding:2% 3%;font-size:clamp(6px,1.1vw,10px);color:var(--navy);line-height:1.6;border-radius:0;}
+.hl strong{color:var(--red);}
+.cb{display:inline-block;padding:2px 8px;border-radius:999px;font-family:'DM Mono',monospace;font-size:clamp(5px,.9vw,9px);background:var(--navy);color:var(--goldf);margin:2px;}
+.ul{list-style:none;font-size:clamp(6px,1.1vw,10.5px);line-height:1.85;color:var(--navy);}
+.ul li::before{content:'→ ';color:var(--red);font-weight:700;}
+.ul-check li::before{content:'✓ ';color:var(--green);}
+.tbl{width:100%;border-collapse:collapse;font-size:clamp(6px,1vw,10px);}
+.tbl th{background:var(--navy);color:#fff;padding:5px 8px;text-align:left;font-weight:600;}
+.tbl td{border:1px solid #DDE2EA;padding:5px 8px;color:var(--navy);}
+.tbl tr:nth-child(even) td{background:#F7F9FC;}
+.good{color:var(--green);font-weight:700;}.bad{color:var(--red);font-weight:700;}
+.dsnum{width:clamp(28px,4vw,44px);height:clamp(28px,4vw,44px);border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:clamp(14px,2.5vw,22px);flex-shrink:0;}
+.tree{font-family:'DM Mono',monospace;font-size:clamp(6px,.95vw,9.5px);line-height:1.9;text-align:center;background:var(--grey);border-radius:8px;padding:3% 2%;color:var(--navy);}
+.qrow{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin:4% 0;}
+.qn{background:var(--navy);color:#fff;padding:5px 12px;border-radius:6px;text-align:center;font-size:clamp(6px,1vw,10px);font-weight:600;}
+.qn.front{background:var(--red);}
+.hn{padding:5px 10px;border-radius:6px;font-size:clamp(6px,.95vw,9px);font-weight:700;color:#fff;text-align:center;}
+.ov{background:var(--grey);border-radius:8px;padding:3% 3%;border-top:3px solid var(--red);}
+.ov-name{font-weight:700;font-size:clamp(7px,1.1vw,10.5px);color:var(--navy);}
+.ov-use{font-size:clamp(6px,.95vw,9px);color:var(--greyb);margin-top:2px;}
+.conc-item{display:flex;align-items:center;gap:3%;background:var(--grey);border-radius:6px;padding:2.5% 3%;margin-bottom:2%;}
+.conc-icon{width:clamp(20px,3vw,30px);height:clamp(20px,3vw,30px);border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.3vw,13px);flex-shrink:0;}
+.conc-text{font-size:clamp(7px,1.15vw,11px);font-weight:500;color:var(--navy);}
+.btmbar{position:absolute;bottom:0;left:0;right:0;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:1.2% 4.5%;}
+.btmbar-brand{font-family:'DM Serif Display',serif;font-size:clamp(8px,1.2vw,12px);color:rgba(255,255,255,.4);}
+.btmbar-pg{font-size:clamp(7px,1vw,10px);color:rgba(255,255,255,.35);}
+
+/* ── COVER special ── */
+.cover-grid{display:grid;grid-template-columns:38% 62%;height:100%;}
+.cv-left{background:var(--red);position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:6% 6%;overflow:hidden;}
+.cv-left::before{content:'';position:absolute;top:-10%;right:-15%;width:50%;padding-top:50%;border-radius:50%;background:rgba(255,255,255,.07);}
+.cv-left::after{content:'';position:absolute;bottom:10%;left:-12%;width:40%;padding-top:40%;border-radius:50%;background:rgba(255,255,255,.05);}
+.cv-drop{width:13%;padding-top:13%;position:relative;z-index:2;background:#fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cv-drop-in{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);font-size:clamp(10px,2.5vw,22px);}
+.cv-brand{position:relative;z-index:2;margin-top:auto;}
+.cv-brand-main{font-family:'DM Serif Display',serif;font-size:clamp(16px,5vw,50px);color:#fff;line-height:1;letter-spacing:-1px;}
+.cv-brand-main em{display:block;font-style:italic;color:var(--goldf);font-size:1.1em;}
+.cv-tag{margin-top:3%;font-size:clamp(7px,1.4vw,12px);color:rgba(255,255,255,.7);line-height:1.5;position:relative;z-index:2;}
+.cv-uni{margin-top:auto;position:relative;z-index:2;font-size:clamp(6px,1.1vw,10px);font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.5);text-transform:uppercase;border-top:1px solid rgba(255,255,255,.2);padding-top:5%;}
+.cv-right{display:flex;flex-direction:column;background:var(--navy);padding:5% 6%;gap:4%;}
+.cv-toprow{display:flex;align-items:center;justify-content:space-between;}
+.cv-cbadge{background:rgba(200,16,46,.3);border:1px solid rgba(200,16,46,.5);color:#F5C6CE;padding:2% 4%;border-radius:4px;font-size:clamp(6px,1.1vw,9px);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.cv-pgn{font-family:'DM Mono',monospace;font-size:clamp(6px,1vw,9px);color:rgba(255,255,255,.3);}
+.cv-dslabel{font-size:clamp(6px,.95vw,8px);font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:2%;}
+.cv-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.cv-pill{background:rgba(200,16,46,.25);border:1px solid rgba(200,16,46,.5);color:#FFAABB;padding:2% 3.5%;border-radius:999px;font-size:clamp(6px,1vw,9px);font-weight:500;}
+.cv-infogrid{display:grid;grid-template-columns:1fr 1fr;gap:3%;flex:1;}
+.cv-icard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5% 5%;}
+.cv-ictitle{font-size:clamp(6px,.95vw,8px);font-weight:700;letter-spacing:2px;color:var(--goldf);text-transform:uppercase;margin-bottom:6%;}
+.cv-irow{display:flex;gap:4%;font-size:clamp(6px,1.1vw,10.5px);color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:3%;}
+.cv-irow span:first-child{color:rgba(255,255,255,.4);min-width:28%;font-size:clamp(6px,.95vw,9px);}
+.cv-btm{border-top:1px solid rgba(255,255,255,.1);padding-top:3%;display:flex;justify-content:space-between;align-items:center;}
+.cv-quote{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(7px,1.2vw,11px);color:rgba(255,255,255,.3);}
+.cv-sem{font-size:clamp(6px,.95vw,9px);color:rgba(255,255,255,.25);letter-spacing:1px;}
+</style>
+
+<div class="pres">
+
+<div class="nav">
+  <span class="nav-title">BloodConnect — DSA LAB I Presentation</span>
+  <div class="nav-dots" id="dots"></div>
+  <div class="nav-btns">
+    <button class="nav-btn" onclick="go(-1)">← Prev</button>
+    <span class="pg-counter" id="pgc">1 / 16</span>
+    <button class="nav-btn red" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<div id="slides">
+
+<!-- ══ S1: COVER ══ -->
+<div class="slide-wrap active">
+<div class="slide">
+  <div class="cover-grid">
+    <div class="cv-left">
+      <div class="cv-drop"><div class="cv-drop-in">🩸</div></div>
+      <div class="cv-brand">
+        <div class="cv-brand-main">Blood<em>Connect</em></div>
+        <p class="cv-tag">Connecting Blood Donors<br>with Those in Need</p>
+      </div>
+      <div class="cv-uni">UAR - United to Act Rapidly</div>
+    </div>
+    <div class="cv-right">
+      <div class="cv-toprow">
+        <span class="cv-cbadge">Data Structures &amp; Algorithms</span>
+        <span class="cv-pgn">01 / 16</span>
+      </div>
+      <div>
+        <p class="cv-dslabel">7 Data Structures Implemented</p>
+        <div class="cv-pills">
+          <span class="cv-pill">Array</span><span class="cv-pill">Linked List</span>
+          <span class="cv-pill">Stack</span><span class="cv-pill">Circular Queue</span>
+          <span class="cv-pill">BST</span><span class="cv-pill">Min-Heap</span>
+          <span class="cv-pill">Sorting</span>
+        </div>
+      </div>
+      <div class="cv-infogrid">
+        <div class="cv-icard">
+          <p class="cv-ictitle">Student Info</p>
+          <div class="cv-irow"><span>Name</span><span>Amzad Hossain Rafi</span></div>
+          <div class="cv-irow"><span>ID</span><span>1814351051</span></div>
+          <div class="cv-irow"><span>University</span><span>UITS</span></div>
+          <div class="cv-irow"><span>Semester</span><span>Spring 2026</span></div>
+        </div>
+        <div class="cv-icard">
+          <p class="cv-ictitle">Supervisor</p>
+          <div class="cv-irow"><span>Name</span><span>Sadia Afrin Urmi</span></div>
+          <div class="cv-irow"><span>Title</span><span>Lecturer</span></div>
+          <div class="cv-irow"><span>Dept</span><span>CSE</span></div>
+          <div class="cv-irow"><span>Course</span><span>DSA Lab I</span></div>
+        </div>
+      </div>
+      <div class="cv-btm">
+        <span class="cv-quote">"Donate Blood · Save a Life"</span>
+        <span class="cv-sem">Fall 2024 — DSA Project</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — COVER (Say this first)</div>
+  <div class="speak-line">"Assalamu Alaikum sir / madam. My name is Amzad Hossain Rafi, ID 1814351051."</div>
+  <div class="speak-line">"Today I am presenting my DSA project called <strong>BloodConnect</strong> — a Blood Donation Management System."</div>
+  <div class="speak-line">"In this project, I have used <strong>7 data structures</strong> — Array, Linked List, Stack, Circular Queue, BST, Min-Heap, and Sorting."</div>
+  <div class="speak-line">"Each data structure solves a real problem in the system. Let me explain them one by one."</div>
+  <div class="speak-tip">💡 Tip: Speak slowly. Smile. Take a deep breath before starting.</div>
+</div> -->
+</div>
+
+<!-- ══ S2: OVERVIEW ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">OVERVIEW</span><span class="pgn">02 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Project Overview</h1>
+    <p class="psub">What this system does and why we need it</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">The Problem</p><p style="font-size:clamp(7px,1.15vw,11px);line-height:1.75;color:var(--navy);">Bangladesh needs thousands of blood donors every day. But finding the right donor fast, managing records, and handling emergencies is very hard without a proper system.</p></div>
+        <div class="card"><p class="ctitle">Our Solution</p><ul class="ul" style="font-size:clamp(6px,1.05vw,10px);">
+          <li>Register and manage blood donors</li><li>Record full donation history</li>
+          <li>Handle emergency blood requests</li><li>Undo any mistake instantly</li>
+          <li>Search donors fast by ID or name</li><li>Sort and display donor lists</li>
+        </ul></div>
+      </div>
+      <div class="col">
+        <div class="g4" style="flex:1;">
+          <div class="ov"><div class="ov-name">Array</div><div class="ov-use">Donor database</div></div>
+          <div class="ov"><div class="ov-name">Linked List</div><div class="ov-use">History records</div></div>
+          <div class="ov"><div class="ov-name">Stack</div><div class="ov-use">Undo operations</div></div>
+          <div class="ov"><div class="ov-name">Circ. Queue</div><div class="ov-use">Waiting list</div></div>
+          <div class="ov"><div class="ov-name">BST</div><div class="ov-use">Fast search</div></div>
+          <div class="ov"><div class="ov-name">Min-Heap</div><div class="ov-use">Emergency priority</div></div>
+          <div class="ov"><div class="ov-name">Bubble Sort</div><div class="ov-use">Sort by name</div></div>
+          <div class="ov"><div class="ov-name">Sel. Sort</div><div class="ov-use">Sort by blood</div></div>
+        </div>
+        <div class="hl"><strong>Key idea:</strong> Each data structure was chosen because it is the best tool for that specific job — not randomly.</div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">02 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — PROJECT OVERVIEW</div>
+  <div class="speak-line">"Sir, the main goal of BloodConnect is to manage blood donors and handle emergency requests efficiently."</div>
+  <div class="speak-line">"The problem is — finding the right donor fast, keeping history, and fixing mistakes. Our system solves all of this."</div>
+  <div class="speak-line">"We used 7 data structures. Each one has a specific job. For example — Array stores donors, Stack handles undo, and Min-Heap manages emergencies."</div>
+  <div class="speak-tip">💡 Tip: Point to each box on screen when you say its name.</div>
+</div> -->
+</div>
+
+<!-- ══ S3: ARRAY ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 01</span><span class="pgn">03 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">1</div><div><h1 class="ptitle" style="margin:0;">Array</h1><p class="psub" style="margin:0;">Donor Database — stores all donors in a list</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Code Structure</p>
+          <div class="code"><span class="kw">#define</span> MAX_DONORS 100<br><br><span class="kw">typedef struct</span> {<br>&nbsp;&nbsp;<span class="ty">int</span> id;<br>&nbsp;&nbsp;<span class="ty">char</span> name[50];<br>&nbsp;&nbsp;<span class="ty">int</span> age;<br>&nbsp;&nbsp;<span class="ty">char</span> bloodType[10];<br>&nbsp;&nbsp;<span class="ty">char</span> contact[20];<br>&nbsp;&nbsp;<span class="ty">int</span> donationCount;<br>} Donor;<br><br>Donor donors[MAX_DONORS];<br><span class="ty">int</span> donorCount = 0;</div>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Access O(1)</span><span class="cb">Search O(n)</span><span class="cb">Space O(n)</span></div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Sample Donor Data</p>
+          <table class="tbl"><tr><th>ID</th><th>Name</th><th>Blood</th><th>Donations</th></tr>
+          <tr><td>2000</td><td>Amzad Rafi</td><td>AB+</td><td>0</td></tr>
+          <tr><td>2001</td><td>Rafi Ahmed</td><td>O−</td><td>3</td></tr>
+          <tr><td>2002</td><td>Sara Khan</td><td>A+</td><td>1</td></tr></table>
+        </div>
+        <div class="g2">
+          <div class="card"><p class="ctitle">Good Things</p><ul class="ul-check ul" style="font-size:clamp(6px,1vw,10px);"><li>Access by index is O(1)</li><li>Simple to use</li><li>Fast for fixed data</li></ul></div>
+          <div class="card"><p class="ctitle">Limitations</p><ul class="ul" style="font-size:clamp(6px,1vw,10px);"><li>Fixed max size</li><li>Search is slow O(n)</li><li>Delete is costly</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">03 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — ARRAY (Read this simply)</div>
+  <div class="speak-line">"Sir, the first data structure I used is <strong>Array</strong>."</div>
+  <div class="speak-line">"An array is like a table. Each donor has a box — box 0, box 1, box 2 and so on. I can go to any box directly using its number. This is called index access and it is very fast — O(1)."</div>
+  <div class="speak-line">"I stored each donor's ID, name, age, blood type, and contact number in this array. Maximum 100 donors can be stored."</div>
+  <div class="speak-line">"The limitation is — if I want to search by name, I have to check every box one by one. That is O(n). That is why I also used BST for faster search."</div>
+  <div class="speak-tip">💡 Simple analogy: "Think of it like seats in a classroom — seat 1, seat 2, seat 3. You can go directly to any seat."</div>
+</div> -->
+</div>
+
+<!-- ══ S4: LINKED LIST ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 02</span><span class="pgn">04 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">2</div><div><h1 class="ptitle" style="margin:0;">Linked List</h1><p class="psub" style="margin:0;">Donation History — unlimited records, grows automatically</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Node Structure</p>
+          <div class="code"><span class="kw">typedef struct</span> HistoryNode {<br>&nbsp;&nbsp;Donor donor;<br>&nbsp;&nbsp;<span class="ty">char</span> date[20];<br>&nbsp;&nbsp;<span class="ty">int</span> units;<br>&nbsp;&nbsp;<span class="kw">struct</span> HistoryNode* next;<br>} HistoryNode;<br><br>HistoryNode* head = NULL;<br><br><span class="cm">/* Insert at front — O(1) */</span><br><span class="ty">void</span> <span class="fn">addHistory</span>(Donor d) {<br>&nbsp;&nbsp;HistoryNode* n = malloc(sizeof(*n));<br>&nbsp;&nbsp;n->next = head;<br>&nbsp;&nbsp;head = n;<br>}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">How It Looks</p>
+          <div class="tree" style="font-size:clamp(6px,.9vw,9px);line-height:2;">
+            <span style="color:var(--red);font-weight:700;">[HEAD — newest first]</span><br>
+            ┌────────────────┐<br>│ Rafi · 2 units │──→<br>│ 10-01-2024     │<br>└────────────────┘<br>
+            ┌────────────────┐<br>│ Sara · 1 unit  │──→<br>│ 05-11-2023     │<br>└────────────────┘<br>
+            <span style="color:var(--greyb);">NULL</span>
+          </div>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Insert O(1)</span><span class="cb">Search O(n)</span><span class="cb">No size limit</span></div>
+        <div class="card"><p class="ctitle">Why Linked List here?</p><p style="font-size:clamp(6px,1.05vw,10px);color:var(--navy);line-height:1.7;">History grows every time someone donates. An array would get full. A linked list never gets full — it grows automatically by creating new nodes in memory.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">04 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — LINKED LIST</div>
+  <div class="speak-line">"Sir, the second data structure is <strong>Linked List</strong>. I used it to store donation history."</div>
+  <div class="speak-line">"A linked list is like a chain. Each record has a pointer to the next record. When a new donation happens, I add a new record at the front of the chain. This takes O(1) time — very fast."</div>
+  <div class="speak-line">"The big advantage is — it has no size limit. As many donations as happen, it keeps growing. An array cannot do this."</div>
+  <div class="speak-line">"The newest donation always shows first because we insert at the HEAD of the chain."</div>
+  <div class="speak-tip">💡 Simple analogy: "Think of a linked list like a chain of paper notes — each note points to the next one."</div>
+</div> -->
+</div>
+
+<!-- ══ S5: STACK ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 03</span><span class="pgn">05 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">3</div><div><h1 class="ptitle" style="margin:0;">Stack</h1><p class="psub" style="margin:0;">Undo Operations — Last In, First Out (LIFO)</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Code</p>
+          <div class="code"><span class="kw">typedef struct</span> StackNode {<br>&nbsp;&nbsp;<span class="ty">char</span> operation[150];<br>&nbsp;&nbsp;<span class="kw">struct</span> StackNode* next;<br>} StackNode;<br><br>StackNode* top = NULL;<br><br><span class="cm">/* Push — O(1) */</span><br><span class="ty">void</span> <span class="fn">push</span>(<span class="ty">char</span>* msg) {<br>&nbsp;&nbsp;StackNode* n = malloc(sizeof(*n));<br>&nbsp;&nbsp;strcpy(n->operation, msg);<br>&nbsp;&nbsp;n->next = top; top = n;<br>}<br><span class="cm">/* Pop — O(1) */</span><br><span class="ty">void</span> <span class="fn">pop</span>() {<br>&nbsp;&nbsp;StackNode* t = top;<br>&nbsp;&nbsp;top = top->next; free(t);<br>}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Stack Visual — Top to Bottom</p>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:3% 0;">
+            <div style="background:var(--red);color:#fff;padding:5px 40%;border-radius:6px 6px 0 0;font-size:clamp(6px,.95vw,9px);font-weight:600;text-align:center;">Remove Donor Sara ← TOP</div>
+            <div style="background:var(--navy2);color:#fff;padding:5px 40%;font-size:clamp(6px,.95vw,9px);font-weight:600;text-align:center;">Add Donor: Rafi</div>
+            <div style="background:var(--navy2);color:#fff;padding:5px 40%;font-size:clamp(6px,.95vw,9px);font-weight:600;text-align:center;">Donation: 2 units</div>
+            <div style="background:var(--navy);color:#fff;padding:5px 40%;border-radius:0 0 6px 6px;font-size:clamp(6px,.95vw,9px);font-weight:600;text-align:center;">Add Donor: John ← BOTTOM</div>
+          </div>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Push O(1)</span><span class="cb">Pop O(1)</span><span class="cb">Peek O(1)</span></div>
+        <div class="card"><p class="ctitle">How undo works</p><p style="font-size:clamp(6px,1.05vw,10px);color:var(--navy);line-height:1.8;">1. Add Donor → push("ADD Rafi")<br>2. Delete Donor → push("REMOVE Rafi")<br>3. Press Undo → pop() → restores Rafi ✓</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">05 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — STACK</div>
+  <div class="speak-line">"Sir, the third data structure is <strong>Stack</strong>. I used it for the undo feature."</div>
+  <div class="speak-line">"Stack works like LIFO — Last In, First Out. Think of it like a stack of plates. The last plate you put on top is the first one you take off."</div>
+  <div class="speak-line">"Every time the user does something — like adding or deleting a donor — I push that action to the stack. If they make a mistake and press Undo, I pop the last action and reverse it."</div>
+  <div class="speak-line">"Push and Pop both take O(1) time. This is the fastest possible — constant time."</div>
+  <div class="speak-tip">💡 Real life example: "This is exactly how Ctrl+Z works in Microsoft Word. Same concept."</div>
+</div> -->
+</div>
+
+<!-- ══ S6: CIRCULAR QUEUE ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 04</span><span class="pgn">06 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">4</div><div><h1 class="ptitle" style="margin:0;">Circular Queue</h1><p class="psub" style="margin:0;">Waiting List — First Come, First Served (FIFO)</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Code</p>
+          <div class="code"><span class="kw">#define</span> QUEUE_SIZE 10<br>Donor waitQueue[QUEUE_SIZE];<br><span class="ty">int</span> front=-1, rear=-1;<br><br><span class="ty">void</span> <span class="fn">enqueue</span>(Donor d) { <span class="cm">/* O(1) */</span><br>&nbsp;&nbsp;<span class="kw">if</span>(isFull()) <span class="kw">return</span>;<br>&nbsp;&nbsp;<span class="kw">if</span>(front==-1) front=rear=0;<br>&nbsp;&nbsp;<span class="kw">else</span> rear=(rear+1)%QUEUE_SIZE;<br>&nbsp;&nbsp;waitQueue[rear]=d;<br>}<br><span class="ty">void</span> <span class="fn">dequeue</span>() { <span class="cm">/* O(1) */</span><br>&nbsp;&nbsp;<span class="kw">if</span>(front==rear) {front=rear=-1;<span class="kw">return</span>;}<br>&nbsp;&nbsp;front=(front+1)%QUEUE_SIZE;<br>}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Queue Visual</p>
+          <div class="qrow">
+            <div class="qn front">Donor A<br><small>FRONT</small></div>
+            <span style="color:var(--greyb);font-size:16px;">→</span>
+            <div class="qn">Donor B</div>
+            <span style="color:var(--greyb);font-size:16px;">→</span>
+            <div class="qn" style="background:var(--navy2);">Donor C<br><small>REAR</small></div>
+          </div>
+          <p style="font-size:clamp(6px,.95vw,9px);color:var(--greyb);text-align:center;">After Donor A is served → front moves to Donor B. At index 9, rear wraps back to index 0.</p>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Enqueue O(1)</span><span class="cb">Dequeue O(1)</span></div>
+        <div class="card"><p class="ctitle">Why Circular?</p><p style="font-size:clamp(6px,1.05vw,10px);color:var(--navy);line-height:1.7;">A normal queue wastes the empty slots at the front after dequeue. A circular queue reuses those slots — rear = (rear + 1) % SIZE — so no space is wasted.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">06 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — CIRCULAR QUEUE</div>
+  <div class="speak-line">"Sir, the fourth data structure is <strong>Circular Queue</strong>. I used it for the donor waiting list."</div>
+  <div class="speak-line">"A queue works like a line at a hospital — whoever comes first gets served first. This is called FIFO — First In, First Out."</div>
+  <div class="speak-line">"I made it circular so that when the rear pointer reaches the end, it goes back to index 0 and reuses the empty space. The formula is: rear = (rear + 1) divided by QUEUE SIZE."</div>
+  <div class="speak-line">"Both adding to queue and removing from queue take O(1) — constant time."</div>
+  <div class="speak-tip">💡 Simple analogy: "Think of people standing in a line at a hospital counter. First person in line gets called first."</div>
+</div> -->
+</div>
+
+<!-- ══ S7: BST ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 05</span><span class="pgn">07 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">5</div><div><h1 class="ptitle" style="margin:0;">Binary Search Tree (BST)</h1><p class="psub" style="margin:0;">Fast Donor Search by ID — O(log n) average</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Node & Search</p>
+          <div class="code"><span class="kw">typedef struct</span> BSTNode {<br>&nbsp;&nbsp;<span class="ty">int</span> donorIndex;<br>&nbsp;&nbsp;<span class="kw">struct</span> BSTNode *left, *right;<br>} BSTNode;<br><br><span class="cm">/* Search — O(log n) avg */</span><br><span class="ty">int</span> <span class="fn">bstSearch</span>(BSTNode* root, <span class="ty">int</span> id) {<br>&nbsp;&nbsp;<span class="kw">if</span>(!root) <span class="kw">return</span> -1;<br>&nbsp;&nbsp;<span class="kw">if</span>(id == donors[root->donorIndex].id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> root->donorIndex;<br>&nbsp;&nbsp;<span class="kw">if</span>(id &lt; donors[root->donorIndex].id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> bstSearch(root->left, id);<br>&nbsp;&nbsp;<span class="kw">return</span> bstSearch(root->right, id);<br>}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">BST Shape (IDs as keys)</p>
+          <div class="tree">
+<span style="color:var(--red);font-weight:700;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2003)</span><br>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\</span><br>
+<span>&nbsp;&nbsp;&nbsp;(2001)&nbsp;&nbsp;&nbsp;(2005)</span><br>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;\</span><br>
+<span>&nbsp;&nbsp;(2002)(2004)&nbsp;(2006)</span>
+          </div>
+          <p style="font-size:clamp(6px,.9vw,9px);color:var(--greyb);text-align:center;margin-top:4%;">Inorder = 2001→2002→2003→2004→2005→2006 (sorted!)</p>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Search O(log n)</span><span class="cb">Insert O(log n)</span><span class="cb">Worst O(n)</span></div>
+        <div class="card"><p class="ctitle">BST vs Normal Search</p>
+          <table class="tbl" style="font-size:clamp(6px,.95vw,9px);">
+            <tr><th>Donors</th><th>Normal Search</th><th>BST Search</th></tr>
+            <tr><td>100</td><td>100 steps</td><td class="good">7 steps</td></tr>
+            <tr><td>1000</td><td>1000 steps</td><td class="good">10 steps</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">07 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — BST</div>
+  <div class="speak-line">"Sir, the fifth data structure is <strong>Binary Search Tree</strong>. I used it to search donors by ID very quickly."</div>
+  <div class="speak-line">"In a BST, every node has a left side and a right side. If the ID I am looking for is smaller, I go left. If it is bigger, I go right. This way, I reach the answer very fast."</div>
+  <div class="speak-line">"For 100 donors — normal search checks 100 donors one by one. BST only needs 7 steps. For 1000 donors, BST only needs 10 steps. This is O(log n)."</div>
+  <div class="speak-line">"Also — if I read the BST from left to right (inorder), I get all donor IDs in sorted order automatically."</div>
+  <div class="speak-tip">💡 Simple analogy: "Think of a BST like a guessing game. Is the number bigger or smaller? You cut the options in half each time."</div>
+</div> -->
+</div>
+
+<!-- ══ S8: MIN-HEAP ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 06</span><span class="pgn">08 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">6</div><div><h1 class="ptitle" style="margin:0;">Min-Heap (Priority Queue)</h1><p class="psub" style="margin:0;">Emergency requests — most urgent blood type served first</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Heap Operations</p>
+          <div class="code"><span class="cm">/* Insert — O(log n) */</span><br><span class="ty">void</span> <span class="fn">heapInsert</span>(Donor d) {<br>&nbsp;&nbsp;heap[heapSize++] = d;<br>&nbsp;&nbsp;heapifyUp(heapSize-1);<br>}<br><br><span class="cm">/* Serve most urgent — O(log n) */</span><br>Donor <span class="fn">heapExtractMin</span>() {<br>&nbsp;&nbsp;Donor top = heap[0];<br>&nbsp;&nbsp;heap[0] = heap[--heapSize];<br>&nbsp;&nbsp;heapifyDown(0);<br>&nbsp;&nbsp;<span class="kw">return</span> top;<br>}<br><br><span class="cm">/* Key rule: parent always smaller */</span><br><span class="cm">/* parent index = (i-1) / 2       */</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Blood Priority Order</p>
+          <div class="qrow" style="gap:5px;">
+            <div class="hn" style="background:#8B0A1E;">O−<br>P1</div>
+            <div class="hn" style="background:#C8102E;">O+<br>P2</div>
+            <div class="hn" style="background:#D85A30;">A−<br>P3</div>
+            <div class="hn" style="background:#E07050;">A+<br>P4</div>
+            <div class="hn" style="background:#C9A84C;color:#333;">B−<br>P5</div>
+            <div class="hn" style="background:#6A994E;">B+<br>P6</div>
+            <div class="hn" style="background:#386641;">AB−<br>P7</div>
+            <div class="hn" style="background:#1E3352;">AB+<br>P8</div>
+          </div>
+        </div>
+        <div class="card"><p class="ctitle">Heap Tree Shape</p>
+          <div class="tree" style="font-size:clamp(6px,.9vw,9.5px);">
+<span style="color:var(--red);font-weight:700;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[O− P1] ← always on top</span><br>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\</span><br>
+<span>&nbsp;&nbsp;[O+ P2]&nbsp;&nbsp;[A− P3]</span><br>
+<span>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;\</span><br>
+<span>[A+ P4][B− P5]</span>
+          </div>
+        </div>
+        <div class="hl"><strong>Complexity:</strong> <span class="cb">Insert O(log n)</span><span class="cb">Serve urgent O(log n)</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">08 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — MIN-HEAP</div>
+  <div class="speak-line">"Sir, the sixth data structure is <strong>Min-Heap</strong>. I used it for emergency blood requests."</div>
+  <div class="speak-line">"Not all blood requests are equal. O-negative blood can be given to anyone — so it is the most urgent, priority 1. AB-positive is the least urgent."</div>
+  <div class="speak-line">"In a Min-Heap, the most urgent request always stays at the top — the root. When I call extract minimum, I get the most urgent request in O(log n) time."</div>
+  <div class="speak-line">"The rule of a heap is: every parent must be smaller than its children. So the smallest priority number is always at the root."</div>
+  <div class="speak-tip">💡 Simple analogy: "Think of an emergency room. Critical patients get treated first, not the ones who came first."</div>
+</div> -->
+</div>
+
+<!-- ══ S9: SORTING ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DS — 07</span><span class="pgn">09 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <div style="display:flex;align-items:center;gap:2%;margin-bottom:.5%;"><div class="dsnum">7</div><div><h1 class="ptitle" style="margin:0;">Sorting Algorithms</h1><p class="psub" style="margin:0;">Bubble Sort by Name · Selection Sort by Blood Priority</p></div></div>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Bubble Sort — sort names A to Z</p>
+          <div class="code"><span class="ty">void</span> <span class="fn">bubbleSortByName</span>() {<br>&nbsp;&nbsp;<span class="kw">for</span>(<span class="ty">int</span> i=0; i&lt;n-1; i++)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span>(<span class="ty">int</span> j=0; j&lt;n-i-1; j++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(strcmp(d[j].name,d[j+1].name)&gt;0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(d[j], d[j+1]);<br>}</div>
+          <p style="font-size:clamp(6px,1vw,10px);margin-top:4%;color:var(--navy);line-height:1.8;">Before: [Zara, Amzad, Rafi, John]<br>After pass 1: [Amzad, Rafi, John, Zara]<br>Final ✓: [Amzad, John, Rafi, Zara]</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Selection Sort — sort by blood priority</p>
+          <div class="code"><span class="ty">void</span> <span class="fn">selectionSortByBlood</span>() {<br>&nbsp;&nbsp;<span class="kw">for</span>(<span class="ty">int</span> i=0; i&lt;n-1; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">int</span> mi=i;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span>(<span class="ty">int</span> j=i+1; j&lt;n; j++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(d[j].priority &lt; d[mi].priority) mi=j;<br>&nbsp;&nbsp;&nbsp;&nbsp;swap(d[i], d[mi]);<br>&nbsp;&nbsp;}<br>}</div>
+        </div>
+        <div class="card"><p class="ctitle">Comparison</p>
+          <table class="tbl" style="font-size:clamp(6px,.95vw,9.5px);">
+            <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Stable?</th></tr>
+            <tr><td>Bubble Sort</td><td class="good">O(n)</td><td>O(n²)</td><td>O(n²)</td><td class="good">Yes</td></tr>
+            <tr><td>Selection Sort</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td class="bad">No</td></tr>
+          </table>
+        </div>
+        <div class="hl"><strong>Key difference:</strong> Bubble sort is stable. Selection sort makes fewer swaps — only O(n) total swaps.</div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">09 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — SORTING</div>
+  <div class="speak-line">"Sir, the seventh data structure is <strong>Sorting</strong>. I used two sorting algorithms."</div>
+  <div class="speak-line">"First — <strong>Bubble Sort</strong>. It compares two names side by side. If the first one comes after the second alphabetically, they swap. This keeps repeating until all names are in order A to Z."</div>
+  <div class="speak-line">"Second — <strong>Selection Sort</strong>. It finds the smallest priority number from the unsorted part and puts it in the correct position. It does fewer swaps than bubble sort."</div>
+  <div class="speak-line">"Both are O(n squared) time — suitable for our small dataset of 100 donors."</div>
+  <div class="speak-tip">💡 If sir asks why not QuickSort: "For this project, these simple sorts are enough. For millions of records, QuickSort at O(n log n) would be better."</div>
+</div> -->
+</div>
+
+<!-- ══ S10: COMPLEXITY ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">ANALYSIS</span><span class="pgn">10 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Complexity Summary</h1>
+    <p class="psub">Time and space complexity for all 7 data structures</p>
+    <div class="redline"></div>
+    <table class="tbl" style="font-size:clamp(6px,1.05vw,10.5px);flex:1;">
+      <thead><tr><th>Data Structure</th><th>Main Operation</th><th>Best Case</th><th>Average</th><th>Worst Case</th><th>Space</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Array</strong></td><td>Access / Search</td><td class="good">O(1) / O(n)</td><td>O(1) / O(n)</td><td>O(1) / O(n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Linked List</strong></td><td>Insert / Search</td><td class="good">O(1) / O(n)</td><td>O(1) / O(n)</td><td>O(1) / O(n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Stack</strong></td><td>Push / Pop</td><td class="good">O(1)</td><td class="good">O(1)</td><td class="good">O(1)</td><td>O(n)</td></tr>
+        <tr><td><strong>Circular Queue</strong></td><td>Enqueue / Dequeue</td><td class="good">O(1)</td><td class="good">O(1)</td><td class="good">O(1)</td><td>O(n)</td></tr>
+        <tr><td><strong>BST (avg)</strong></td><td>Insert / Search</td><td class="good">O(log n)</td><td class="good">O(log n)</td><td class="bad">O(n)*</td><td>O(n)</td></tr>
+        <tr><td><strong>Min-Heap</strong></td><td>Insert / Extract Min</td><td class="good">O(log n)</td><td class="good">O(log n)</td><td class="good">O(log n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Bubble Sort</strong></td><td>Sort array</td><td class="good">O(n)</td><td class="bad">O(n²)</td><td class="bad">O(n²)</td><td>O(1)</td></tr>
+        <tr><td><strong>Selection Sort</strong></td><td>Sort array</td><td class="bad">O(n²)</td><td class="bad">O(n²)</td><td class="bad">O(n²)</td><td>O(1)</td></tr>
+      </tbody>
+    </table>
+    <div class="g2" style="margin-top:2%;">
+      <div class="hl"><strong>* BST worst case:</strong> When IDs are added in sorted order, BST becomes a straight line — O(n). Fix: use AVL Tree.</div>
+      <div class="hl" style="border-color:var(--gold);background:#FFF9EC;"><strong>Fastest:</strong> Stack and Queue — O(1) always. BST and Heap — O(log n) for large data.</div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">10 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — COMPLEXITY</div>
+  <div class="speak-line">"Sir, this slide shows the time complexity of all 7 data structures."</div>
+  <div class="speak-line">"<strong>O(1)</strong> means constant time — the fastest. No matter how many donors, it takes the same time. Stack and Queue are O(1)."</div>
+  <div class="speak-line">"<strong>O(log n)</strong> means very fast — each step cuts the work in half. BST and Min-Heap are O(log n)."</div>
+  <div class="speak-line">"<strong>O(n)</strong> means we check every item one by one. <strong>O(n squared)</strong> is slowest — used only for sorting small data."</div>
+  <div class="speak-tip">💡 Memorize this: O(1) → O(log n) → O(n) → O(n²). Smaller = faster. This one sentence will save you in the viva.</div>
+</div> -->
+</div>
+
+<!-- ══ S11: MENU ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">SYSTEM</span><span class="pgn">11 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Menu Architecture</h1>
+    <p class="psub">How the program is organized into menus</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card card-navy"><p class="ctitle">Main Menu</p>
+          <div class="code" style="background:#060e18;margin-top:4%;">
+1. Donor Management    <span class="cm">← Array</span><br>
+2. Donation History    <span class="cm">← Linked List</span><br>
+3. Undo Operations     <span class="cm">← Stack</span><br>
+4. Waiting Queue       <span class="cm">← Circular Queue</span><br>
+5. Emergency Priority  <span class="cm">← Min-Heap</span><br>
+6. Search &amp; Sort       <span class="cm">← BST + Sorting</span><br>
+0. Exit</div>
+        </div>
+        <div class="card"><p class="ctitle">Donor Sub-Menu</p>
+          <div class="code">
+1. View All Blood Banks<br>2. View All Donors<br>3. Add New Donor<br>4. Remove Donor<br>0. Back</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Search &amp; Sort Sub-Menu</p>
+          <div class="code">
+1. Search by ID    <span class="cm">← BST O(log n)</span><br>
+2. Search by Name  <span class="cm">← Linear O(n)</span><br>
+3. BST Inorder     <span class="cm">← sorted IDs</span><br>
+4. Sort by Name    <span class="cm">← Bubble Sort</span><br>
+5. Sort by Blood   <span class="cm">← Selection Sort</span><br>
+0. Back</div>
+        </div>
+        <div class="card"><p class="ctitle">Emergency Sub-Menu</p>
+          <div class="code">
+1. Add Emergency Request<br>2. View All Requests<br>3. Serve Most Urgent<br>0. Back</div>
+        </div>
+        <div class="hl"><strong>Design:</strong> Each menu module uses exactly one data structure. Easy to demonstrate each one separately.</div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">11 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — MENU</div>
+  <div class="speak-line">"Sir, the program is organized into a main menu with 6 options. Each option corresponds to one data structure."</div>
+  <div class="speak-line">"Option 1 — Donor Management — uses Array. Option 3 — Undo — uses Stack. Option 5 — Emergency — uses Min-Heap."</div>
+  <div class="speak-line">"This structure makes it easy to test and explain each data structure one by one."</div>
+  <div class="speak-tip">💡 During demo: Open the program, go through the menu, and show each option. Have sample data ready so you can show results immediately.</div>
+</div> -->
+</div>
+
+<!-- ══ S12: DEMO ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">DEMO</span><span class="pgn">12 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Sample Program Output</h1>
+    <p class="psub">What the terminal shows when you run the program</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card card-navy"><p class="ctitle">Adding a donor</p>
+          <div class="code" style="background:#060e18;font-size:clamp(6px,.95vw,9.5px);">
+=== ADD NEW DONOR ===<br>
+&nbsp;&nbsp;Name: Amzad Hossain Rafi<br>
+&nbsp;&nbsp;Age: 30<br>
+&nbsp;&nbsp;Blood Type: AB+<br>
+&nbsp;&nbsp;Contact: 01518643371<br><br>
+&nbsp;&nbsp;[OK] Donor added! ID: 2000<br>
+&nbsp;&nbsp;[OK] BST updated.<br>
+&nbsp;&nbsp;[OK] Undo stack updated.</div>
+        </div>
+        <div class="card card-navy"><p class="ctitle">Serving emergency request</p>
+          <div class="code" style="background:#060e18;font-size:clamp(6px,.95vw,9.5px);">
+=== SERVING MOST URGENT ===<br>
+&nbsp;&nbsp;Name     : Rafi Ahmed (ID: 2001)<br>
+&nbsp;&nbsp;Blood    : O- (Universal Donor)<br>
+&nbsp;&nbsp;Priority : HIGH [1] CRITICAL<br><br>
+&nbsp;&nbsp;[OK] Sent to emergency unit.</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card card-navy"><p class="ctitle">BST inorder — sorted IDs</p>
+          <div class="code" style="background:#060e18;font-size:clamp(6px,.95vw,9.5px);">
+=== BST INORDER TRAVERSAL ===<br>
+&nbsp;&nbsp;ID:2000 | Amzad Hossain | AB+<br>
+&nbsp;&nbsp;ID:2001 | Rafi Ahmed    | O-<br>
+&nbsp;&nbsp;ID:2002 | Sara Khan     | A+<br>
+&nbsp;&nbsp;(Sorted by ID automatically)</div>
+        </div>
+        <div class="card"><p class="ctitle">What happens when you add a donor</p>
+          <ul class="ul-check ul" style="font-size:clamp(6px,1.05vw,10px);">
+            <li>Stored in donors[] array</li>
+            <li>Index inserted into BST</li>
+            <li>Action pushed to undo stack</li>
+            <li>Ready for queue or heap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">12 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — DEMO OUTPUT</div>
+  <div class="speak-line">"Sir, when I add a donor, three things happen automatically — it is stored in the array, inserted into the BST, and the action is saved in the undo stack."</div>
+  <div class="speak-line">"When I serve an emergency request, the Min-Heap gives me the most urgent blood type instantly."</div>
+  <div class="speak-line">"When I do BST inorder traversal, all donor IDs appear in sorted order automatically — without any separate sorting."</div>
+  <div class="speak-tip">💡 If running a live demo: Add 3 donors first → search one by ID → show undo → add emergency request → serve it. This covers 5 data structures in 2 minutes.</div>
+</div> -->
+</div>
+
+<!-- ══ S13: ADVANTAGES ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">ADVANTAGES</span><span class="pgn">13 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">System Advantages</h1>
+    <p class="psub">Why this system is better than a simple approach</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card"><p class="ctitle">Technical Strengths</p>
+          <ul class="ul-check ul" style="font-size:clamp(6px,1.1vw,10.5px);">
+            <li>7 data structures used correctly</li>
+            <li>Fast search — O(log n) with BST</li>
+            <li>Fast emergency — O(log n) with Heap</li>
+            <li>Undo mistake in O(1) time</li>
+            <li>Fair waiting line — O(1) queue</li>
+            <li>No memory leaks — free() on exit</li>
+            <li>Clean modular code</li>
+          </ul>
+        </div>
+        <div class="card"><p class="ctitle">Performance vs Simple System</p>
+          <table class="tbl" style="font-size:clamp(6px,.95vw,9.5px);">
+            <tr><th>Task</th><th>Simple</th><th>BloodConnect</th></tr>
+            <tr><td>Search donor</td><td>O(n) slow</td><td class="good">O(log n)</td></tr>
+            <tr><td>Get urgent request</td><td>O(n) scan</td><td class="good">O(log n)</td></tr>
+            <tr><td>History storage</td><td>Fixed array</td><td class="good">Dynamic</td></tr>
+            <tr><td>Undo mistake</td><td>Not possible</td><td class="good">O(1)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Real World Uses</p>
+          <ul class="ul" style="font-size:clamp(6px,1.1vw,10.5px);">
+            <li>Hospital blood bank systems</li>
+            <li>Emergency triage management</li>
+            <li>National donor registry</li>
+            <li>Disaster relief coordination</li>
+            <li>Blood donation camp management</li>
+          </ul>
+        </div>
+        <div class="card card-red"><p class="ctitle">The Main Point</p>
+          <p style="font-size:clamp(7px,1.2vw,11.5px);color:#fff;line-height:1.8;">Every data structure was chosen because it is the <em>best tool</em> for its specific job. This is how professional systems are built — the right structure for the right problem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">13 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — ADVANTAGES</div>
+  <div class="speak-line">"Sir, the biggest advantage is performance. A simple system using only arrays would need O(n) for every search. BloodConnect does it in O(log n) using BST."</div>
+  <div class="speak-line">"For emergency requests — a simple system would scan every request to find the most urgent. Our Min-Heap gives the most urgent one instantly in O(log n)."</div>
+  <div class="speak-line">"Also — in a simple system, if you make a mistake, you cannot undo it. Our Stack gives you undo in O(1) — instant."</div>
+  <div class="speak-tip">💡 Key sentence to memorize: "The right data structure for the right problem makes a system fast, efficient, and reliable."</div>
+</div> -->
+</div>
+
+<!-- ══ S14: FUTURE ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">FUTURE</span><span class="pgn">14 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Future Improvements</h1>
+    <p class="psub">How this project can grow into a real-world system</p>
+    <div class="redline"></div>
+    <div class="g3" style="flex:1;">
+      <div class="card"><p class="ctitle">Better Data Structures</p>
+        <ul class="ul" style="font-size:clamp(6px,1.05vw,10px);">
+          <li>AVL Tree — fixes BST worst case, always O(log n)</li>
+          <li>Hash Table — O(1) average search</li>
+          <li>Graph — map donors to nearby hospitals</li>
+          <li>Trie — fast name prefix search</li>
+        </ul>
+      </div>
+      <div class="card"><p class="ctitle">New Features</p>
+        <ul class="ul" style="font-size:clamp(6px,1.05vw,10px);">
+          <li>Save data to file — persistent storage</li>
+          <li>SMS / email notification to donors</li>
+          <li>Blood expiry tracking</li>
+          <li>Donor eligibility checker</li>
+          <li>QR code donor ID cards</li>
+        </ul>
+      </div>
+      <div class="card"><p class="ctitle">Platform Upgrade</p>
+        <ul class="ul" style="font-size:clamp(6px,1.05vw,10px);">
+          <li>Web application with UI</li>
+          <li>Mobile app (Android/iOS)</li>
+          <li>Database backend (SQL)</li>
+          <li>Cloud deployment</li>
+          <li>Multi-user system</li>
+        </ul>
+      </div>
+    </div>
+    <div class="hl" style="margin-top:2%;">
+      <strong>Most important upgrade:</strong> Replace BST with AVL Tree. It self-balances after every insert and delete — so worst case O(n) becomes O(log n) always.
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">14 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — FUTURE</div>
+  <div class="speak-line">"Sir, this is a terminal-based system. In the future, I would like to add a graphical interface — a web or mobile app."</div>
+  <div class="speak-line">"I would also replace the BST with an AVL Tree. AVL Tree self-balances — so even if IDs are inserted in sorted order, search stays O(log n) always."</div>
+  <div class="speak-line">"I would also add file storage so donor data is not lost when the program closes."</div>
+  <div class="speak-tip">💡 This shows you understand the limitations of your own project. Teachers love this kind of self-awareness.</div>
+</div> -->
+</div>
+
+<!-- ══ S15: CONCLUSION ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">CONCLUSION</span><span class="pgn">15 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">Conclusion</h1>
+    <p class="psub">What was achieved in this project</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">7 data structures correctly implemented and demonstrated</div></div>
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">Real healthcare problem solved using the right data structures</div></div>
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">O(log n) search and priority using BST and Min-Heap</div></div>
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">Undo, sorting, and fast search — all working features</div></div>
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">Clean modular code — no memory leaks on exit</div></div>
+        <div class="conc-item"><div class="conc-icon">✓</div><div class="conc-text">Nested menu system — easy to navigate and test each DS</div></div>
+      </div>
+      <div class="col" style="justify-content:center;">
+        <div class="card card-navy" style="text-align:center;padding:6% 5%;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4%;">
+          <div style="font-size:clamp(20px,4vw,40px);">🩸</div>
+          <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(11px,2vw,20px);color:#F5C6CE;line-height:1.4;">"Donate Blood,<br>Save a Life"</p>
+          <p style="font-size:clamp(6px,1.05vw,10px);color:rgba(255,255,255,.55);line-height:1.8;">BloodConnect shows that choosing the right data structure is not just academic — it makes a system faster, smarter, and in healthcare, possibly lifesaving.</p>
+          <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:4%;width:100%;">
+            <p style="color:var(--goldf);font-size:clamp(9px,1.4vw,13px);font-weight:600;">Thank You</p>
+            <p style="color:rgba(255,255,255,.4);font-size:clamp(7px,1.05vw,10px);margin-top:2%;">Ready for your questions, sir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">15 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — CONCLUSION (Final words)</div>
+  <div class="speak-line">"Sir, to conclude — in this project I successfully implemented 7 data structures to build a working Blood Donation Management System."</div>
+  <div class="speak-line">"Each data structure was chosen for a specific reason — not randomly. Array for storage, Linked List for unlimited history, Stack for undo, Queue for waiting, BST for fast search, Heap for emergency, and Sorting for reports."</div>
+  <div class="speak-line">"The main lesson is — the right data structure makes the system fast, efficient, and practical."</div>
+  <div class="speak-line">"Thank you sir. I am ready for your questions."</div>
+  <div class="speak-tip">💡 End with a smile and stand straight. You've got this!</div>
+</div> -->
+</div>
+
+<!-- ══ S16: INSTALL ══ -->
+<div class="slide-wrap">
+<div class="slide">
+  <div class="inner">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><span class="badge">INSTALL</span><span class="pgn">16 / 16</span></div><span class="logo">BloodConnect</span></div>
+    <h1 class="ptitle">How to Compile & Run</h1>
+    <p class="psub">Run on any computer in 2 steps</p>
+    <div class="redline"></div>
+    <div class="g2" style="flex:1;">
+      <div class="col">
+        <div class="card card-navy"><p class="ctitle">Linux / Mac</p>
+          <div class="code" style="background:#060e18;">
+<span class="cm"># Step 1 — compile</span><br>
+gcc -Wall -o bloodconnect bloodconnect.c<br><br>
+<span class="cm"># Step 2 — run</span><br>
+./bloodconnect</div>
+        </div>
+        <div class="card card-navy"><p class="ctitle">Windows</p>
+          <div class="code" style="background:#060e18;">
+gcc -Wall -o bloodconnect.exe bloodconnect.c<br><br>
+bloodconnect.exe</div>
+        </div>
+        <div class="card"><p class="ctitle">Online — no setup needed</p>
+          <p style="font-size:clamp(7px,1.1vw,11px);color:var(--navy);line-height:1.8;">Go to <strong>onlinegdb.com</strong> → Select <strong>C language</strong> → Paste code → Click <strong>Run</strong></p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card"><p class="ctitle">Requirements</p>
+          <table class="tbl" style="font-size:clamp(6px,1vw,10.5px);">
+            <tr><th>What</th><th>Needed</th></tr>
+            <tr><td>Compiler</td><td>GCC 4.8+</td></tr>
+            <tr><td>Language</td><td>C (C99 or C11)</td></tr>
+            <tr><td>RAM</td><td>512 MB minimum</td></tr>
+            <tr><td>OS</td><td>Windows / Linux / Mac</td></tr>
+            <tr><td>Libraries</td><td>None — stdlib only</td></tr>
+          </table>
+        </div>
+        <div class="card"><p class="ctitle">Recommended IDEs</p>
+          <ul class="ul-check ul" style="font-size:clamp(6px,1.05vw,10.5px);">
+            <li>VS Code (free, best)</li>
+            <li>Code::Blocks (easy for beginners)</li>
+            <li>Dev-C++ (Windows, lightweight)</li>
+            <li>OnlineGDB (no install needed)</li>
+          </ul>
+        </div>
+        <div class="hl"><strong>Zero dependencies.</strong> Only uses stdio.h, stdlib.h, string.h — runs on any computer with a C compiler.</div>
+      </div>
+    </div>
+  </div>
+  <div class="btmbar"><span class="btmbar-brand">BloodConnect</span><span class="btmbar-pg">16 / 16</span></div>
+</div>
+<!-- <div class="speak">
+  <div class="speak-label">🎤 WHAT TO SAY — INSTALLATION</div>
+  <div class="speak-line">"Sir, the program is written in C language. It needs only the GCC compiler — no extra libraries."</div>
+  <div class="speak-line">"To compile: gcc -Wall -o bloodconnect bloodconnect.c. To run: ./bloodconnect. That is all."</div>
+  <div class="speak-line">"If there is no compiler available, I can also run it on onlinegdb.com — just paste the code and click Run."</div>
+  <div class="speak-tip">💡 Before the presentation: compile and test the program. Have it already open and running on your laptop.</div>
+</div> -->
+</div>
+
+</div>
+</div>
+
+<script>
+var cur=0, total=16;
+var slides=document.querySelectorAll('.slide-wrap');
+var dotsEl=document.getElementById('dots');
+var pgc=document.getElementById('pgc');
+
+for(var i=0;i<total;i++){
+  var d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.setAttribute('data-i',i);
+  d.onclick=(function(idx){return function(){goTo(idx);};})(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur=(n+total)%total;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  pgc.textContent=(cur+1)+' / '+total;
+  slides[cur].scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function go(dir){goTo(cur+dir);}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(-1);
+});
+</script>
